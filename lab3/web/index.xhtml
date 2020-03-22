@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: grazik
+  Date: 21.03.2020
+  Time: 20:34
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Title</title>
+</h:head>
+
+<h:body>
+    <p:tabView>
+        <p:tab title="Form">
+            <h:form>
+                <p:spinner value="#{sumBean.number1}"/>
+                +
+                <p:spinner value="#{sumBean.number2}"/>
+                <p:commandButton  value="calculate" action="#{sumBean.showMessage}" update="sumResult timestamp :growl"/>
+                =
+                <h:outputText id="sumResult" value="#{sumBean.number1 + sumBean.number2}"/>
+                <h:outputText id="timestamp" value="#{sumBean.timestamp}"/>
+            </h:form>
+        </p:tab>
+        <p:tab title="Table">
+            <p:dataTable var="student" value="#{dtTableView.students}" paginator="true" rows="10">
+                <p:column headerText="ID" sortBy="#{student.ID}">
+                    <h:outputText value="#{student.ID}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{student.name}" />
+                </p:column>
+
+                <p:column headerText="Surname" sortBy="#{student.surname}">
+                    <h:outputText value="#{student.surname}" />
+                </p:column>
+
+                <p:column headerText="Average" sortBy="#{student.average}">
+                    <h:outputText value="#{student.average}" >
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+        </p:tab>
+        <p:tab title="Chart">
+            <p:chart type="line" model="#{lineChartBean.lineModel}" widgetVar="chart" />
+            <p:commandButton type="button" value="Reset" icon="pi pi-ban" onclick="PF('chart').resetZoom()"/>
+        </p:tab>
+    </p:tabView>
+    <p:growl id="growl" life="2000"/>
+</h:body>
+
+</html>
