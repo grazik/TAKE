@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $("#calc").click(() => {
+                const x = $('#x').val();
+                const y = $('#y').val();
+                $.ajax('/api/math', {
+                    data: {
+                        x,
+                        y,
+                    }
+                }).done(({
+                    difference,
+                    product,
+                    quotient,
+                    sum,
+                }) => {
+                    $('#sum').text(sum);
+                    $('#difference').text(difference);
+                    $('#product').text(product);
+                    $('#quotient').text(quotient);
+                });
+            });
+        });
+    </script>
+    <div>
+        <h1>Calculations</h1>
+        <form>
+            x = <input type="number" id="x" />
+            y = <input type="number" id="y" />
+            <input type="button" id="calc" value="Call API (jQuery)" />
+            <input type="button" id="calcJS" value="Call API (vanilla JS)" />
+        </form>
+        x + y = <span id="sum"></span><br />
+        x - y = <span id="difference"></span><br />
+        x * y = <span id="product"></span><br />
+        x / y = <span id="quotient"></span><br />
+    </div>
+    <script type="text/javascript">
+        const xInput = document.getElementById('x');
+        const yInput = document.getElementById('y');
+
+        const sumField = document.getElementById('sum');
+        const differenceField = document.getElementById('difference');
+        const productField = document.getElementById('product');
+        const quotientField = document.getElementById('quotient');
+
+        document.getElementById('calcJS').addEventListener('click', () => {
+            fetch(`/api/math?x=${xInput.value}&y=${yInput.value}`, {
+            }).then(response => response.json()).then(({
+                difference,
+                product,
+                quotient,
+                sum,
+            }) => {
+                sumField.textContent = sum;
+                productField.textContent = product;
+                differenceField.textContent = difference;
+                quotientField.textContent = quotient;
+            });
+        })
+    </script>
+</body>
+</html>
